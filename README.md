@@ -30,3 +30,10 @@ The main trade-off is strictness. The parser rejects any header that does not co
 
 - `parseTraceparent(header: string): { version: string; traceId: string; spanId: string; flags: string }`
 - `tryParseTraceparent(header: string): { version: string; traceId: string; spanId: string; flags: string } | null`
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
